@@ -95,6 +95,22 @@ export async function POST(req: Request) {
     repertorio: 800,
   };
 
+  // HYPE tende a entrar em loop de repetição de frase em respostas mais longas.
+  // Temperatura mais baixa favorece esse loop; sobe um pouco só pra essa força
+  // e usa frequency_penalty pra penalizar tokens repetidos.
+  const FORCE_TEMPERATURE: Record<Force, number> = {
+    hype: 0.6,
+    caixa: 0.4,
+    freio: 0.4,
+    repertorio: 0.4,
+  };
+  const FORCE_FREQUENCY_PENALTY: Record<Force, number> = {
+    hype: 0.4,
+    caixa: 0,
+    freio: 0,
+    repertorio: 0,
+  };
+
   const groqBody = {
     model: GROQ_MODEL,
     messages: [
@@ -102,7 +118,8 @@ export async function POST(req: Request) {
       { role: "user", content: userPrompt },
     ],
     stream: true,
-    temperature: 0.4,
+    temperature: FORCE_TEMPERATURE[force],
+    frequency_penalty: FORCE_FREQUENCY_PENALTY[force],
     max_tokens: FORCE_MAX_TOKENS[force],
   };
 
