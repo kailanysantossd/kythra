@@ -126,7 +126,7 @@ export async function POST(req: Request) {
   // Rate limit do Groq (TPM) estoura em sessões de 4 chamadas em sequência.
   // Um retry após a espera sugerida cobre o que a redução de tokens sozinha não garante.
   const MAX_RETRIES = 2;
-  const MAX_WAIT_SECONDS = 15;
+  const MAX_WAIT_SECONDS = 25;
 
   function parseRetrySeconds(body: string, header: string | null): number {
     if (header) {
