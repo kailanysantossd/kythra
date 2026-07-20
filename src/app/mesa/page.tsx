@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { FORCE_LABEL, FORCE_ORDER, type Force } from "@/lib/prompts";
 
 type ForceStatus = "idle" | "waiting" | "streaming" | "done" | "error";
@@ -127,12 +128,12 @@ export default function MesaPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col px-6 py-12 sm:px-10 sm:py-20">
       <header className="mb-12">
-        <a
+        <Link
           href="/"
           className="text-sm text-foreground/60 transition hover:text-foreground/90"
         >
           ← voltar
-        </a>
+        </Link>
         <h1 className="mt-8 font-serif text-5xl italic leading-[0.9] tracking-tight sm:text-6xl">
           a mesa
         </h1>
