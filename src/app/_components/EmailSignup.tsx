@@ -3,13 +3,27 @@
 import { useState } from "react";
 
 export function EmailSignup() {
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
   const [email, setEmail] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email) return;
-    setStatus("sent");
+    if (!email || status === "sending") return;
+
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("subscribe failed");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   if (status === "sent") {
@@ -19,7 +33,7 @@ export function EmailSignup() {
           anotado.
         </p>
         <p className="text-sm text-foreground/70">
-          te aviso quando a mesa abrir.
+          te aviso das novidades da mesa.
         </p>
       </div>
     );
@@ -31,7 +45,7 @@ export function EmailSignup() {
         seu email
       </label>
       <p className="mb-2 text-xs text-foreground/60">
-        te aviso quando a mesa abrir.
+        novidades da mesa, direto no seu email.
       </p>
       <form
         onSubmit={handleSubmit}
@@ -48,11 +62,23 @@ export function EmailSignup() {
         />
         <button
           type="submit"
-          className="rounded-full bg-accent px-6 py-3 text-sm font-semibold tracking-tight text-background transition hover:opacity-90"
+          disabled={status === "sending"}
+          className="rounded-full bg-accent px-6 py-3 text-sm font-semibold tracking-tight text-background transition hover:opacity-90 disabled:opacity-60"
         >
-          me avise →
+          {status === "sending" ? "enviando…" : "me avise →"}
         </button>
       </form>
+      {status === "error" && (
+        <p className="mt-2 text-xs text-red-500">
+          deu ruim, tenta de novo em instantes.
+        </p>
+      )}
+      <a
+        href="#mesa"
+        className="mt-3 block text-center text-xs text-foreground/50 underline-offset-4 hover:underline"
+      >
+        ou já testa agora ↓
+      </a>
     </div>
   );
 }

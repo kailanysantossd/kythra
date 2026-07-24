@@ -116,7 +116,7 @@ export default function Home() {
       </section>
 
       {/* mesa */}
-      <section className="border-t border-border px-6 py-24 sm:px-10 sm:py-48">
+      <section id="mesa" className="border-t border-border px-6 py-24 sm:px-10 sm:py-48">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-8xl sm:leading-[1]">
             Chega a{" "}
