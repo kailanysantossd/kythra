@@ -8,7 +8,9 @@ import {
 export const maxDuration = 60;
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+// llama-3.3-70b-versatile depreciado pela Groq (encerramento 16/08/2026),
+// migrado pro substituto oficial recomendado.
+const GROQ_MODEL = "openai/gpt-oss-120b";
 
 // Faixas Unicode onde Llama 3.3 tem histórico de vazar tokens em textos pt-BR:
 // U+3000-303F CJK Punctuation, U+3040-309F Hiragana, U+30A0-30FF Katakana,
@@ -121,6 +123,9 @@ export async function POST(req: Request) {
     temperature: FORCE_TEMPERATURE[force],
     frequency_penalty: FORCE_FREQUENCY_PENALTY[force],
     max_tokens: FORCE_MAX_TOKENS[force],
+    // gpt-oss gasta tokens de "raciocínio" antes da resposta visível;
+    // "low" mantém esse overhead mínimo (~8 tokens vs ~63 em "medium"/"high" default).
+    reasoning_effort: "low",
   };
 
   // Rate limit do Groq (TPM) estoura em sessões de 4 chamadas em sequência.
