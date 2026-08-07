@@ -1,0 +1,7 @@
+[
+    {
+        "path": "src/app/privacidade/page.tsx",
+        "policy": "EmailPolicy",
+        "justification": "Email de contato público do produto (canal LGPD para titulares de dados), exigido pela própria página de política de privacidade — não é email pessoal identificável nem segredo, é conteúdo destinado a aparecer publicamente."
+    }
+]

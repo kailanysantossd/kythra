@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export function EmailSignup() {
@@ -79,6 +80,16 @@ export function EmailSignup() {
       >
         ou já testa agora ↓
       </a>
+      <p className="mt-3 text-center text-xs text-foreground/40">
+        ao assinar, você concorda com a{" "}
+        <Link
+          href="/privacidade"
+          className="underline underline-offset-4 hover:text-foreground/60"
+        >
+          política de privacidade
+        </Link>
+        .
+      </p>
     </div>
   );
 }
